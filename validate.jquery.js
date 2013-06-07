@@ -30,7 +30,6 @@
 				});
 			});
 			
-			
 			$(settings.submitClass).click(function(){
 				//Start with valid state
 				validate = true;
@@ -41,8 +40,7 @@
 					//If they have failed class, disable submit button
 					if ($(this).hasClass(settings.failedClass)) {
 						validate = false;
-					}
-					
+					}	
 				});
 				
 				//Form won't submit if validate is false
@@ -61,7 +59,7 @@
 		var elType = 			el.prop('type'), 
 			elText = 			el.val(),
 			elPlaceholder = 	el.attr('placeholder');
-		
+
 		//If there is no text in input field or the text is the same as the placeholder add class failedClass to field
 		if(!elText || elText == elPlaceholder){
 			failed(el, settings);
@@ -74,20 +72,6 @@
 					} else {
 						passed(el, settings);
 					}
-					break;
-				case 'radio':
-					if($(el).parent().children('input[type="radio"]:checked').length!=1){
-               			 failed(el, settings);
-					 } else {
-						 passed(el, settings);
-           			}
-					break;
-				case 'checkbox':
-					if($(el).parent().children('input[type="checkbox"]:checked').length>0){
-               			 failed(el, settings);
-					 } else {
-					 	passed(el, settings);	 
-           			}
 					break;
 				case 'tel':
 					if(!isValidPhone(elText)){
