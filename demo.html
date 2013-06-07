@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Validate Demo</title>
+		<style>
+			* {
+				-webkit-box-sizing: border-box;
+				-moz-box-sizing: border-box;
+				-ms-box-sizing: border-box;
+				box-sizing: border-box;
+  			}
+		
+			.bad {
+				border: 2px solid red;
+			}
+			
+			.good {
+				border: 2px solid green;
+			}
+			
+			form {
+				width: 50%;
+				margin: 0 auto;
+			}
+			
+			input, textarea {
+				width: 100%;
+				margin-top: 20px;
+				padding: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<form action="#" method="POST" class="form">
+			<input type="text" name="name" placeholder="name" required>
+
+			<input type="email" name="email" placeholder="email" required>
+			
+			<input type="tel" name="telephone" placeholder="tel" required>
+	
+			<textarea name="message" placeholder="query" required></textarea>
+			
+			<!-- Make sure submit/button has class -->
+			<input type="submit" class="submit" value="submit">
+		</form>
+		
+		 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		 <script>window.jQuery || document.write('<script src="js/jquery-1.7.2.min.js"><\/script>')</script>
+		 
+		 <script src="validate.jquery.js"></script>
+		 <script>
+		 	$(document).ready(function(){	
+				//Call plugin
+				$('.form').validate({
+					failedClass:  'bad',
+					passedClass:  'good',
+					//Note period at start of string
+					submitClass:  '.submit'
+				});
+			});//end document.ready
+		 </script>
+	</body>
+</html>
