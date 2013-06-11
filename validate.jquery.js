@@ -6,7 +6,9 @@
 		var settings = $.extend({
 			failedClass:		'failed',
 			passedClass:		'success',
-			submitClass:		'.submit'
+			submitClass:		'.submit',
+			//only ajax form if user sets path
+			ajaxPath:			''
 		}, options);
 		
 		return this.each(function(){
@@ -18,7 +20,7 @@
 			//Checks each input to see if valid
 			inputs.each(function(){
 				$(this).on({
-					keyup: function(){
+					keypress: function(){
 						validateField($(this), settings);
 					},
 					blur: function(){
@@ -30,7 +32,7 @@
 				});
 			});
 			
-			$(settings.submitClass).click(function(){
+			$(settings.submitClass).click(function(e){
 				//Start with valid state
 				validate = true;
 				
@@ -43,8 +45,26 @@
 					}	
 				});
 				
-				//Form won't submit if validate is false
-				return validate;
+				//if user has set ajaxPath
+				//and all fields are valid
+				//then ajax form
+				if(settings.ajaxPath != '' && validate){
+					//stops page from reloading
+					e.preventDefault();
+					//performs ajax request
+					$.ajax({
+						url: settings.ajaxPath,
+						data: $(form).serialize(),
+						type: 'POST',
+						success: function(data) {
+							$(form).replaceWith(data);
+						}
+					});
+				//else reload page as normal					
+				} else {
+					//Form won't submit if validate is false
+					return validate;	
+				}
 			});
 			
 		});
@@ -59,8 +79,11 @@
 		var elType = 			el.prop('type'), 
 			elText = 			el.val(),
 			elPlaceholder = 	el.attr('placeholder');
-
-		//If there is no text in input field or the text is the same as the placeholder add class failedClass to field
+		
+		console.log(elType);
+		//If there is no text in input field
+		//or the text is the same as the placeholder/
+		//add class failedClass to field
 		if(!elText || elText == elPlaceholder){
 			failed(el, settings);
 		} else {
