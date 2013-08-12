@@ -15,7 +15,7 @@
 			var form = this;
 			
 			//Selects inputs and text areas with required tag
-			var inputs = $(form).children('input[required], textarea[required]');
+			var inputs = $(form).find('input[required], textarea[required], select[required]');
 
 			//Checks each input to see if valid
 			inputs.each(function(){
@@ -79,8 +79,7 @@
 		var elType = 			el.prop('type'), 
 			elText = 			el.val(),
 			elPlaceholder = 	el.attr('placeholder');
-		
-		console.log(elType);
+
 		//If there is no text in input field
 		//or the text is the same as the placeholder/
 		//add class failedClass to field
@@ -88,7 +87,13 @@
 			failed(el, settings);
 		} else {
 			switch (elType){
-				
+				case 'number':
+					if(!isNumber(elText)){
+						failed(el, settings);	
+					} else {
+						passed(el, settings);
+					}
+					break;
 				case 'email': 
 					if(!isValidEmailAddress(elText)){
 						failed(el, settings);	
@@ -103,6 +108,13 @@
 						passed(el, settings);
 					}
 					break;
+				case 'select-one':
+					if(elText == el.find('option:first-child').val()){
+						failed(el, settings);	
+					} else {
+						passed(el, settings);
+					}
+					break;
 				default:
 					passed(el, settings);
 					break;
@@ -110,6 +122,14 @@
 			}
 		}
 		
+	}
+	
+	//----------------------------
+	//Validate number
+	//----------------------------
+	function isNumber(num) {
+            var pattern = new RegExp(/^\d+$/);
+            return pattern.test(num);
 	}
 	
 	//----------------------------
